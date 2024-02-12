@@ -1,11 +1,12 @@
-import { AbilityBuilder, Ability } from '@casl/ability'
+import { AbilityBuilder, PureAbility } from '@casl/ability'
+import { UserRole } from 'src/types'
 
 export type Subjects = string
 export type Actions = 'manage' | 'create' | 'read' | 'update' | 'delete'
 
-export type AppAbility = Ability<[Actions, Subjects]> | undefined
+export type AppAbility = PureAbility<[Actions, Subjects]> | undefined
 
-export const AppAbility = Ability as any
+export const AppAbility = PureAbility as any
 export type ACLObj = {
   action: Actions
   subject: string
@@ -19,12 +20,20 @@ export type ACLObj = {
 const defineRulesFor = (role: string, subject: string) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
 
-  if (role === 'admin') {
-    can('manage', 'all')
-  } else if (role === 'client') {
-    can(['read'], 'acl-page')
-  } else {
-    can(['read', 'create', 'update', 'delete'], subject)
+  switch (role) {
+    case UserRole.ADMIN:
+      can('manage', 'all')
+      break
+    case UserRole.BUYER:
+      break
+    case UserRole.SELLER:
+      break
+    case UserRole.CLIENT:
+      can(['read'], 'acl-page')
+      break
+    default:
+      can(['read', 'create', 'update', 'delete'], subject)
+      break
   }
 
   return rules

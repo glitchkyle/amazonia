@@ -12,6 +12,7 @@ interface AuthGuardProps {
   fallback: ReactElement | null
 }
 
+// Verifies that user is authenticted
 const AuthGuard = (props: AuthGuardProps) => {
   const { children, fallback } = props
   const auth = useAuth()
@@ -24,13 +25,16 @@ const AuthGuard = (props: AuthGuardProps) => {
       }
 
       if (auth.user === null && !window.localStorage.getItem('userData')) {
+        // If there is no user and no stored user data
         if (router.asPath !== '/') {
+          // If user is trying to access auth protected page, redirect to login
           router.replace({
             pathname: '/login',
             query: { returnUrl: router.asPath }
           })
         } else {
-          router.replace('/login')
+          // If guest is trying to access root page, redirect to default page
+          router.replace('/catalog')
         }
       }
     },

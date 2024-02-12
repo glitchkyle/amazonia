@@ -11,6 +11,7 @@ import { Settings } from 'src/@core/context/settingsContext'
 // ** Components
 import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
 import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
+import { useAuth } from 'src/hooks/useAuth'
 
 interface Props {
   hidden: boolean
@@ -23,6 +24,8 @@ const AppBarContent = (props: Props) => {
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
 
+  const auth = useAuth()
+
   return (
     <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <Box className='actions-left' sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
@@ -34,9 +37,11 @@ const AppBarContent = (props: Props) => {
 
         <ModeToggler settings={settings} saveSettings={saveSettings} />
       </Box>
-      <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
-        <UserDropdown settings={settings} />
-      </Box>
+      {auth.user && (
+        <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
+          <UserDropdown settings={settings} />
+        </Box>
+      )}
     </Box>
   )
 }
