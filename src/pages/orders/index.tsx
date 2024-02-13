@@ -1,5 +1,5 @@
 const OrderPage = () => {
-  return <>Home Page</>
+  return <>Order Page</>
 }
 
 OrderPage.acl = {

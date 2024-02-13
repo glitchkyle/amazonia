@@ -1,5 +1,5 @@
 const ManagePage = () => {
-  return <>Home Page</>
+  return <>Manager Page</>
 }
 
 export default ManagePage
