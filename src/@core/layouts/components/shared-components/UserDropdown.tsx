@@ -17,11 +17,9 @@ import Typography from '@mui/material/Typography'
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 
-// ** Context
-import { useAuth } from 'src/hooks/useAuth'
-
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
+import options from 'src/configs'
 
 interface Props {
   settings: Settings
@@ -45,7 +43,6 @@ const UserDropdown = (props: Props) => {
 
   // ** Hooks
   const router = useRouter()
-  const { logout } = useAuth()
 
   // ** Vars
   const { direction } = settings
@@ -55,9 +52,7 @@ const UserDropdown = (props: Props) => {
   }
 
   const handleDropdownClose = (url?: string) => {
-    if (url) {
-      router.push(url)
-    }
+    if (url) router.push(url)
     setAnchorEl(null)
   }
 
@@ -74,11 +69,6 @@ const UserDropdown = (props: Props) => {
       fontSize: '1.375rem',
       color: 'text.primary'
     }
-  }
-
-  const handleLogout = () => {
-    logout()
-    handleDropdownClose()
   }
 
   return (
@@ -129,46 +119,14 @@ const UserDropdown = (props: Props) => {
           </Box>
         </Box>
         <Divider sx={{ mt: '0 !important' }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/profile')}>
           <Box sx={styles}>
             <Icon icon='mdi:account-outline' />
             Profile
           </Box>
         </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <Icon icon='mdi:email-outline' />
-            Inbox
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <Icon icon='mdi:message-outline' />
-            Chat
-          </Box>
-        </MenuItem>
-        <Divider />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <Icon icon='mdi:cog-outline' />
-            Settings
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <Icon icon='mdi:currency-usd' />
-            Pricing
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <Icon icon='mdi:help-circle-outline' />
-            FAQ
-          </Box>
-        </MenuItem>
-        <Divider />
         <MenuItem
-          onClick={handleLogout}
+          onClick={() => handleDropdownClose(`/api/auth/logout?returnTo=${options.rootUrl}`)}
           sx={{ py: 2, '& svg': { mr: 2, fontSize: '1.375rem', color: 'text.primary' } }}
         >
           <Icon icon='mdi:logout-variant' />

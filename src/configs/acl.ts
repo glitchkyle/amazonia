@@ -25,8 +25,10 @@ const defineRulesFor = (role: string, subject: string) => {
       can('manage', 'all')
       break
     case UserRole.BUYER:
+      can('read', 'profile')
       break
     case UserRole.SELLER:
+      can('read', 'profile')
       break
     case UserRole.CLIENT:
       can(['read'], 'acl-page')

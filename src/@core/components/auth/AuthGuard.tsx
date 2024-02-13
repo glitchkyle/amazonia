@@ -5,7 +5,8 @@ import { ReactNode, ReactElement, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 // ** Hooks Import
-import { useAuth } from 'src/hooks/useAuth'
+import { useUser } from '@auth0/nextjs-auth0/client'
+import options from 'src/configs'
 
 interface AuthGuardProps {
   children: ReactNode
@@ -15,36 +16,33 @@ interface AuthGuardProps {
 // Verifies that user is authenticted
 const AuthGuard = (props: AuthGuardProps) => {
   const { children, fallback } = props
-  const auth = useAuth()
+  const { user, isLoading } = useUser()
   const router = useRouter()
 
   useEffect(
     () => {
-      if (!router.isReady) {
-        return
-      }
+      if (!router.isReady || isLoading) return
 
-      if (auth.user === null && !window.localStorage.getItem('userData')) {
+      if (!user) {
         // If there is no user and no stored user data
         if (router.asPath !== '/') {
           // If user is trying to access auth protected page, redirect to login
+
           router.replace({
-            pathname: '/login',
-            query: { returnUrl: router.asPath }
+            pathname: `/api/auth/login`,
+            query: { returnTo: router.asPath }
           })
         } else {
           // If guest is trying to access root page, redirect to default page
-          router.replace('/catalog')
+          router.replace(options.rootUrl)
         }
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [router.route]
+    [router.route, user, isLoading]
   )
 
-  if (auth.loading || auth.user === null) {
-    return fallback
-  }
+  if (isLoading || user === null) return fallback
 
   return <>{children}</>
 }

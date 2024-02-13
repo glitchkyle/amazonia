@@ -19,7 +19,7 @@ import Spinner from 'src/@core/components/spinner'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Hooks
-import { useAuth } from 'src/hooks/useAuth'
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 // ** Util Import
 import getHomeRoute from 'src/layouts/components/acl/getHomeRoute'
@@ -37,7 +37,7 @@ const AclGuard = (props: AclGuardProps) => {
   const { aclAbilities, children, guestGuard = false, authGuard = true } = props
 
   // ** Hooks
-  const { user } = useAuth()
+  const { user } = useUser()
   const router = useRouter()
 
   // ** Vars
@@ -53,9 +53,7 @@ const AclGuard = (props: AclGuardProps) => {
   // User is logged in, build ability for the user based on his role
   if (user && !ability) {
     ability = buildAbilityFor(user.role, aclAbilities.subject)
-    if (router.route === '/') {
-      return <Spinner />
-    }
+    if (router.route === '/') return <Spinner />
   }
 
   // If guest guard or no guard is true or any error page
@@ -71,9 +69,7 @@ const AclGuard = (props: AclGuardProps) => {
 
   // Check the access of current user and render pages
   if (ability && user && ability.can(aclAbilities.action, aclAbilities.subject)) {
-    if (router.route === '/') {
-      return <Spinner />
-    }
+    if (router.route === '/') return <Spinner />
 
     return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
   }

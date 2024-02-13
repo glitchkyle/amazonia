@@ -19,9 +19,6 @@ import type { EmotionCache } from '@emotion/cache'
 import { defaultACLObj } from 'src/configs/acl'
 import themeConfig from 'src/configs/themeConfig'
 
-// ** Fake-DB Import
-import 'src/@fake-db'
-
 // ** Third Party Import
 import { Toaster } from 'react-hot-toast'
 
@@ -36,7 +33,6 @@ import GuestGuard from 'src/@core/components/auth/GuestGuard'
 import Spinner from 'src/@core/components/spinner'
 
 // ** Contexts
-import { AuthProvider } from 'src/context/AuthContext'
 import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext'
 
 // ** Styled Components
@@ -58,6 +54,7 @@ import 'src/iconify-bundle/icons-bundle-react'
 
 // ** Global css styles
 import '../../styles/globals.css'
+import { UserProvider } from '@auth0/nextjs-auth0/client'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -125,7 +122,7 @@ const App = (props: ExtendedAppProps) => {
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
 
-      <AuthProvider>
+      <UserProvider>
         <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
           <SettingsConsumer>
             {({ settings }) => {
@@ -144,7 +141,7 @@ const App = (props: ExtendedAppProps) => {
             }}
           </SettingsConsumer>
         </SettingsProvider>
-      </AuthProvider>
+      </UserProvider>
     </CacheProvider>
   )
 }
