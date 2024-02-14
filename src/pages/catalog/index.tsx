@@ -2,17 +2,23 @@
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import KeenSliderWrapper from 'src/@core/styles/libs/keen-slider'
 import ItemCatalog from 'src/views/pages/catalog/ItemCatalog'
+import UserLayout from 'src/layouts/UserLayout'
+import { ProtectPage, ProtectionReturn } from 'src/navigation/pages'
 
-const CatalogPage = () => {
+export const getServerSideProps = ProtectPage({})
+
+const CatalogPage = (props: ProtectionReturn) => {
+  const { permissions } = props
+
   return (
-    <ApexChartWrapper>
-      <KeenSliderWrapper>
-        <ItemCatalog />
-      </KeenSliderWrapper>
-    </ApexChartWrapper>
+    <UserLayout permissions={permissions}>
+      <ApexChartWrapper>
+        <KeenSliderWrapper>
+          <ItemCatalog />
+        </KeenSliderWrapper>
+      </ApexChartWrapper>
+    </UserLayout>
   )
 }
-
-CatalogPage.authGuard = false
 
 export default CatalogPage

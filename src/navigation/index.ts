@@ -1,12 +1,17 @@
 import { NavLink } from 'src/@core/layouts/types'
+import { PUBLIC_NAV_LINKS, getAccessibleLinks } from 'src/configs/acl'
+import { UserPermission } from 'src/types/auth'
 
-const navigationList: NavLink[] = [
-  {
-    title: 'Catalog',
-    path: '/catalog',
-    icon: 'mdi:home-outline',
-    auth: false
-  }
-]
+export function buildNavigationList(perms?: UserPermission[]): NavLink[] {
+  // Initialize with list of publicly available routes
+  const navigationList: NavLink[] = [...PUBLIC_NAV_LINKS]
 
-export default navigationList
+  // No permission means publicly accessible
+  if (!perms) return navigationList
+
+  const accessibleLinks = getAccessibleLinks(perms)
+  console.log(accessibleLinks)
+  navigationList.push(...accessibleLinks)
+
+  return navigationList
+}

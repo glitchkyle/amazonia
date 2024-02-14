@@ -20,6 +20,7 @@ import Icon from 'src/@core/components/icon'
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
 import options from 'src/configs'
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 interface Props {
   settings: Settings
@@ -42,6 +43,7 @@ const UserDropdown = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   // ** Hooks
+  const { user } = useUser()
   const router = useRouter()
 
   // ** Vars
@@ -111,10 +113,7 @@ const UserDropdown = (props: Props) => {
               <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
-              <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                Admin
-              </Typography>
+              <Typography sx={{ fontWeight: 600 }}>{user?.name || 'John Doe'}</Typography>
             </Box>
           </Box>
         </Box>

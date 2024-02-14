@@ -11,8 +11,12 @@ import CardContent from '@mui/material/CardContent'
 import Icon from 'src/@core/components/icon'
 
 // ** Third Party Imports
-import { useUser } from '@auth0/nextjs-auth0/client'
+import { UserProfile } from '@auth0/nextjs-auth0/client'
 import moment from 'moment'
+
+interface PageProps {
+  user: UserProfile
+}
 
 const ProfilePicture = styled('img')(({ theme }) => ({
   width: 120,
@@ -24,10 +28,8 @@ const ProfilePicture = styled('img')(({ theme }) => ({
   }
 }))
 
-const UserProfileHeader = () => {
-  const { user } = useUser()
-
-  if (!user) return null
+const UserProfileHeader = (props: PageProps) => {
+  const { user } = props
 
   return (
     <Card>
@@ -78,7 +80,7 @@ const UserProfileHeader = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', '& svg': { mr: 1, color: 'text.secondary' } }}>
                 <Icon icon='mdi:calendar-blank-outline' />
                 <Typography sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                  Joined {moment(user.updated_at).format('YYYY-MM-DD')}
+                  Logged in at {moment(user.updated_at).format('YYYY-MM-DD')}
                 </Typography>
               </Box>
             </Box>

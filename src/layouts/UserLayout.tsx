@@ -24,12 +24,16 @@ import HorizontalAppBarContent from './components/horizontal/AppBarContent'
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
 
+// ** Type Imports
+import { UserPermission } from 'src/types/auth'
+
 interface Props {
   children: ReactNode
   contentHeightFixed?: boolean
+  permissions?: UserPermission[]
 }
 
-const UserLayout = ({ children, contentHeightFixed }: Props) => {
+const UserLayout = ({ children, contentHeightFixed, permissions }: Props) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
 
@@ -47,9 +51,7 @@ const UserLayout = ({ children, contentHeightFixed }: Props) => {
    */
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
 
-  if (hidden && settings.layout === 'horizontal') {
-    settings.layout = 'vertical'
-  }
+  if (hidden && settings.layout === 'horizontal') settings.layout = 'vertical'
 
   return (
     <Layout
@@ -59,7 +61,7 @@ const UserLayout = ({ children, contentHeightFixed }: Props) => {
       contentHeightFixed={contentHeightFixed}
       verticalLayoutProps={{
         navMenu: {
-          navItems: VerticalNavItems()
+          navItems: VerticalNavItems(permissions)
 
           // Uncomment the below line when using server-side menu in vertical layout and comment the above line
           // navItems: verticalMenuItems
@@ -78,7 +80,7 @@ const UserLayout = ({ children, contentHeightFixed }: Props) => {
       {...(settings.layout === 'horizontal' && {
         horizontalLayoutProps: {
           navMenu: {
-            navItems: HorizontalNavItems()
+            navItems: HorizontalNavItems(permissions)
 
             // Uncomment the below line when using server-side menu in horizontal layout and comment the above line
             // navItems: horizontalMenuItems

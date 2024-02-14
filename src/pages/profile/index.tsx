@@ -1,19 +1,25 @@
 import { Grid } from '@mui/material'
+
 import UserProfileHeader from 'src/views/pages/profile/UserProfileHeader'
+import UserLayout from 'src/layouts/UserLayout'
+import { ProtectPage, ProtectionReturn } from 'src/navigation/pages'
 
-const ProfilePage = () => {
+export const getServerSideProps = ProtectPage({
+  returnPath: '/profile'
+})
+
+const ProfilePage = (props: ProtectionReturn) => {
+  const { user, permissions } = props
+
   return (
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <UserProfileHeader />
+    <UserLayout permissions={permissions}>
+      <Grid container spacing={6}>
+        <Grid item xs={12}>
+          <UserProfileHeader user={user} />
+        </Grid>
       </Grid>
-    </Grid>
+    </UserLayout>
   )
-}
-
-ProfilePage.acl = {
-  action: 'read',
-  subject: 'profile'
 }
 
 export default ProfilePage

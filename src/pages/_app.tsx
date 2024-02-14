@@ -19,7 +19,6 @@ import themeConfig from 'src/configs/themeConfig'
 import { Toaster } from 'react-hot-toast'
 
 // ** Component Imports
-import UserLayout from 'src/layouts/UserLayout'
 import ThemeComponent from 'src/@core/theme/ThemeComponent'
 
 // ** Contexts
@@ -71,11 +70,6 @@ if (themeConfig.routingLoader) {
 const App = (props: ExtendedAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
-  // Variables
-  const contentHeightFixed = Component.contentHeightFixed ?? false
-  const getLayout =
-    Component.getLayout ?? (page => <UserLayout contentHeightFixed={contentHeightFixed}>{page}</UserLayout>)
-
   const setConfig = Component.setConfig ?? undefined
 
   return (
@@ -96,7 +90,7 @@ const App = (props: ExtendedAppProps) => {
             {({ settings }) => {
               return (
                 <ThemeComponent settings={settings}>
-                  {getLayout(<Component {...pageProps} />)}
+                  <Component {...pageProps} />
                   <ReactHotToast>
                     <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
                   </ReactHotToast>

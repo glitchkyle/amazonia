@@ -1,7 +1,8 @@
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
-import navigationList from 'src/navigation'
+import { buildNavigationList } from 'src/navigation'
+import { UserPermission } from 'src/types/auth'
 
-const navigation = (): VerticalNavItemsType => navigationList
+const navigation = (permissions?: UserPermission[]): VerticalNavItemsType => buildNavigationList(permissions)
 
 export default navigation
