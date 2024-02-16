@@ -3,7 +3,7 @@ import { ProtectPage, ProtectionReturn } from 'src/navigation/pages'
 import { UserPermission } from 'src/types/auth'
 
 export const getServerSideProps = ProtectPage({
-  authorizedPerms: [UserPermission.READ_PRODUCTS],
+  requiredPerms: [UserPermission.READ_PRODUCTS],
   returnPath: '/products'
 })
 

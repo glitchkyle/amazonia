@@ -10,7 +10,6 @@ export function buildNavigationList(perms?: UserPermission[]): NavLink[] {
   if (!perms) return navigationList
 
   const accessibleLinks = getAccessibleLinks(perms)
-  console.log(accessibleLinks)
   navigationList.push(...accessibleLinks)
 
   return navigationList

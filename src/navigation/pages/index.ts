@@ -6,27 +6,34 @@ import { DecodedAccessToken, UserPermission } from 'src/types/auth'
 /**
  * interface ProtectionProps
  *
- * `authorizedPerms: UserPermission[]`
+ * `requiredPerms: UserPermission[]`
  * Permissions authorized to access this page.
  * (Default) undefined - page can be accessed by anyone regardless of permissions.
  *
  * `returnPath: string`
- * Return URL after the user successfully authenticates.
- * (Default) undefined - page can be accessed publicly
+ * Return URL after the user successfully authenticates. This is usually the page route.
+ * (Default) undefined - page can be accessed publicly.
  */
 interface ProtectionProps {
-  authorizedPerms?: UserPermission[]
+  requiredPerms?: UserPermission[]
   returnPath?: string
 }
 
 export const ProtectPage = (props: ProtectionProps) => {
   return async (ctx: NextPageContext) => {
+    const { requiredPerms, returnPath } = props
+
+    // Get Auth0 session
     const session = await getSession(ctx.req, ctx.res)
+
     if (session) {
+      // If user is authenticated
+
       const { user, accessToken } = session
 
       if (!accessToken) throw new Error('No access token')
 
+      // Perform standard JWT validation.
       const decodedToken = jwtDecode(accessToken) as DecodedAccessToken
       const { aud, permissions } = decodedToken
 
@@ -40,20 +47,25 @@ export const ProtectPage = (props: ProtectionProps) => {
       // Verify token audience claims
       if (!audiences.includes(serverAudience)) throw new Error('Unauthorized')
 
-      if (props.authorizedPerms) {
+      // If page is restricted to certain permissions
+      if (requiredPerms) {
         if (!permissions) throw new Error('Unauthorized')
 
-        // Check if user is permitted to access this page
-        const permitted = props.authorizedPerms.some(permission => permissions.includes(permission))
+        // Verify permissions (scopes)
+        const permitted = requiredPerms.every(permission => permissions.includes(permission))
         if (!permitted) throw new Error('Unauthorized')
       }
 
       return { props: { user, permissions } }
-    } else if (props.returnPath) {
-      return {
-        redirect: {
-          destination: `/api/auth/login?returnTo=${props.returnPath}`,
-          permanent: false
+    } else {
+      // If user is not authenticated
+      if (returnPath) {
+        // If return path after authenticating is defined
+        return {
+          redirect: {
+            destination: `/api/auth/login?returnTo=${returnPath}`,
+            permanent: false
+          }
         }
       }
     }
