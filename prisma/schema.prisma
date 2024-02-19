@@ -11,14 +11,17 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  email     String    @unique
-  sub       String // User ID in Auth0 database
-  picture   String?
-  Product   Product[]
-  Order     Order[]
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  sub           String // User ID in Auth0 database
+  email         String    @unique
+  firstName     String    @default("John") @map("first_name")
+  lastName      String    @default("Doe") @map("last_name")
+  emailVerified Boolean   @default(false) @map("email_verified")
+  picture       String?
+  Product       Product[]
+  Order         Order[]
 
   @@map("users")
 }

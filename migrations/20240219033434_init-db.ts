@@ -5,8 +5,11 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('id').primary()
     table.timestamp('created_at').defaultTo(knex.fn.now())
     table.timestamp('updated_at').defaultTo(knex.fn.now())
-    table.string('email').unique()
     table.string('sub')
+    table.string('email').unique()
+    table.string('first_name').defaultTo('John')
+    table.string('last_name').defaultTo('Doe')
+    table.boolean('email_verified').defaultTo(false)
     table.string('picture').nullable()
   })
 
