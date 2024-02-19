@@ -1,71 +1,36 @@
 import { Card, CardContent, CardMedia, Grid, Typography } from '@mui/material'
+import { Product } from '@prisma/client'
 
-const Item = () => (
+const Item = ({ product }: { product: Product }) => (
   <Card
     sx={{ maxWidth: 345 }}
     onClick={() => {
       console.log('Test')
     }}
   >
-    <CardMedia
-      sx={{ height: 140 }}
-      image='https://seeklogo.com/images/A/auth0-logo-CB96B17A7D-seeklogo.com.png'
-      title='green iguana'
-    />
+    <CardMedia sx={{ height: 140 }} image={product.picture as string} />
     <CardContent>
+      <Typography variant='body2' color='text.secondary'>
+        {product.price} {product.currency}
+      </Typography>
       <Typography gutterBottom variant='h5' component='div'>
-        Item Name
+        {product.name}
       </Typography>
       <Typography variant='body2' color='text.secondary'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at dignissim diam. Nam hendrerit risus sit amet
-        enim tincidunt maximus.
+        {product.description}
       </Typography>
     </CardContent>
   </Card>
 )
 
-const ItemCatalog = () => {
+const ItemCatalog = ({ products }: { products: Product[] }) => {
   return (
     <Grid container spacing={4}>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
-      <Grid item xs={3}>
-        <Item />
-      </Grid>
+      {products.map((product, idx) => (
+        <Grid item xs={3} key={idx}>
+          <Item product={product} />
+        </Grid>
+      ))}
     </Grid>
   )
 }

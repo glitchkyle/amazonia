@@ -17,11 +17,18 @@ import { DecodedAccessToken, UserPermission } from 'src/types/auth'
 interface ProtectionProps {
   requiredPerms?: UserPermission[]
   returnPath?: string
+  callback?: () => Promise<{ props: { [key: string]: unknown } }>
 }
 
-export const ProtectPage = (props: ProtectionProps) => {
+export const ProtectPage = (params: ProtectionProps) => {
   return async (ctx: NextPageContext) => {
-    const { requiredPerms, returnPath } = props
+    const { requiredPerms, returnPath, callback } = params
+
+    let cbProps = {}
+    if (callback) {
+      const { props } = await callback()
+      cbProps = { ...props }
+    }
 
     // Get Auth0 session
     const session = await getSession(ctx.req, ctx.res)
@@ -56,7 +63,7 @@ export const ProtectPage = (props: ProtectionProps) => {
         if (!permitted) throw new Error('Unauthorized')
       }
 
-      return { props: { user, permissions } }
+      return { props: { ...cbProps, user, permissions } }
     } else {
       // If user is not authenticated
       if (returnPath) {
@@ -70,7 +77,7 @@ export const ProtectPage = (props: ProtectionProps) => {
       }
     }
 
-    return { props: {} }
+    return { props: { ...cbProps } }
   }
 }
 
