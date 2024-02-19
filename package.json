@@ -15,7 +15,7 @@
     "db:migrate:make": "TS_NODE_COMPILER_OPTIONS='{ \"module\": \"commonjs\" }' knex migrate:make"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node --compiler-options { \"module\": \"commonjs\" } prisma/seed.ts"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
