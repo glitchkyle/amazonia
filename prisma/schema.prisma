@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  email     String    @unique
+  sub       String // User ID in Auth0 database
+  picture   String?
+  Product   Product[]
+  Order     Order[]
+
+  @@map("users")
+}
+
+model Order {
+  id           String         @id @default(uuid())
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  buyer        User           @relation(fields: [buyerId], references: [id])
+  buyerId      String         @map("buyer_id")
+  OrderProduct OrderProduct[]
+
+  @@map("orders")
+}
+
+model Product {
+  id           String         @id @default(uuid())
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  name         String
+  description  String
+  seller       User           @relation(fields: [sellerId], references: [id])
+  sellerId     String         @map("seller_id")
+  picture      String?
+  price        Int
+  currency     String
+  OrderProduct OrderProduct[]
+
+  @@map("products")
+}
+
+model OrderProduct {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String   @map("product_id")
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String   @map("order_id")
+  quantity  Int
+
+  @@map("order_products")
+}
