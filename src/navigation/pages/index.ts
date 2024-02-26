@@ -38,29 +38,65 @@ export const ProtectPage = (params: ProtectionProps) => {
 
       const { user, accessToken } = session
 
-      if (!accessToken) throw new Error('No access token')
+      if (!accessToken)
+        return {
+          redirect: {
+            destination: `/500`,
+            permanent: false
+          }
+        }
 
       // Perform standard JWT validation.
       const decodedToken = jwtDecode(accessToken) as DecodedAccessToken
       const { aud, permissions } = decodedToken
 
-      if (!aud) throw new Error('No audience in access token')
+      if (!aud)
+        return {
+          redirect: {
+            destination: `/500`,
+            permanent: false
+          }
+        }
 
       const audiences = aud as string[]
       const serverAudience = process.env.AUTH0_AUDIENCE
 
-      if (!serverAudience) throw new Error('No server audience')
+      if (!serverAudience)
+        return {
+          redirect: {
+            destination: `/500`,
+            permanent: false
+          }
+        }
 
       // Verify token audience claims
-      if (!audiences.includes(serverAudience)) throw new Error('Unauthorized')
+      if (!audiences.includes(serverAudience))
+        return {
+          redirect: {
+            destination: `/401`,
+            permanent: false
+          }
+        }
 
       // If page is restricted to certain permissions
       if (requiredPerms) {
-        if (!permissions) throw new Error('Unauthorized')
+        if (!permissions)
+          return {
+            redirect: {
+              destination: `/401`,
+              permanent: false
+            }
+          }
 
         // Verify permissions (scopes)
         const permitted = requiredPerms.every(permission => permissions.includes(permission))
-        if (!permitted) throw new Error('Unauthorized')
+        if (!permitted)
+          return {
+            redirect: {
+              destination: `/401`,
+              permanent: false
+            }
+          }
       }
 
       return { props: { ...cbProps, user, permissions } }
