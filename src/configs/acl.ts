@@ -8,11 +8,6 @@ export const PUBLIC_NAV_LINKS: NavLink[] = [
     icon: 'mdi:home-outline'
   },
   {
-    title: 'Orders',
-    path: '/orders',
-    icon: 'mdi:shopping-outline'
-  },
-  {
     title: 'Cart',
     path: '/cart',
     icon: 'mdi:cart-outline'
@@ -26,6 +21,13 @@ export const PUBLIC_NAV_LINKS: NavLink[] = [
 
 export function getAccessibleLinks(perms: UserPermission[]): NavLink[] {
   const list = []
+
+  if (perms.includes(UserPermission.READ_ORDERS))
+    list.push({
+      title: 'Orders',
+      path: '/orders',
+      icon: 'mdi:shopping-outline'
+    })
 
   if (perms.includes(UserPermission.READ_PRODUCTS))
     list.push({

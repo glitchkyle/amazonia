@@ -17,7 +17,7 @@ import { DecodedAccessToken, UserPermission } from 'src/types/auth'
 interface ProtectionProps {
   requiredPerms?: UserPermission[]
   returnPath?: string
-  callback?: () => Promise<{ props: { [key: string]: unknown } }>
+  callback?: (context: NextPageContext) => Promise<{ props: { [key: string]: unknown } }>
 }
 
 export const ProtectPage = (params: ProtectionProps) => {
@@ -26,7 +26,7 @@ export const ProtectPage = (params: ProtectionProps) => {
 
     let cbProps = {}
     if (callback) {
-      const { props } = await callback()
+      const { props } = await callback(ctx)
       cbProps = { ...props }
     }
 
