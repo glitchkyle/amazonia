@@ -1,60 +1,42 @@
 import moment from 'moment'
 
-import { GetStaticPropsContext } from 'next/types'
-
-import { Grid } from '@mui/material'
+import { ProtectPage, ProtectionReturn } from 'src/navigation/pages'
 
 import db from 'src/configs/db'
 
-import { ProtectionReturn } from 'src/navigation/pages'
+import { Grid } from '@mui/material'
 
 import UserLayout from 'src/layouts/UserLayout'
 
 import ProductViewLeft from 'src/views/pages/catalog/ProductViewLeft'
 import ProductViewRight from 'src/views/pages/catalog/ProductViewRight'
 
-export async function getStaticPaths() {
-  const products = await db.product.findMany({ orderBy: { createdAt: 'desc' } })
+export const getServerSideProps = ProtectPage({
+  callback: async ctx => {
+    const product = await db.product.findUnique({ where: { id: ctx.query.id as string }, include: { seller: true } })
 
-  const paths = products.map(product => {
     return {
-      params: {
-        id: product.id
-      }
-    }
-  })
-
-  return {
-    paths,
-    fallback: false
-  }
-}
-
-export async function getStaticProps({ params }: GetStaticPropsContext) {
-  if (!params) return { props: {} }
-  const product = await db.product.findUnique({ where: { id: params.id as string }, include: { seller: true } })
-
-  return {
-    props: {
-      product: {
-        ...product,
-        createdAt: moment(product?.createdAt).format('MM-DD-YYYY'),
-        updatedAt: moment(product?.updatedAt).format('MM-DD-YYYY'),
-        seller: {
-          ...product?.seller,
-          createdAt: moment(product?.seller.createdAt).format('MM-DD-YYYY'),
-          updatedAt: moment(product?.seller.updatedAt).format('MM-DD-YYYY')
+      props: {
+        product: {
+          ...product,
+          createdAt: moment(product?.createdAt).format('MM-DD-YYYY'),
+          updatedAt: moment(product?.updatedAt).format('MM-DD-YYYY'),
+          seller: {
+            ...product?.seller,
+            createdAt: moment(product?.seller.createdAt).format('MM-DD-YYYY'),
+            updatedAt: moment(product?.seller.updatedAt).format('MM-DD-YYYY')
+          }
         }
       }
     }
   }
-}
+})
 
 const ProductCatalogPage = (props: ProtectionReturn) => {
-  const { product } = props
+  const { permissions, product } = props
 
   return (
-    <UserLayout>
+    <UserLayout permissions={permissions}>
       <Grid container spacing={6}>
         <Grid item xs={12} md={5} lg={4}>
           <ProductViewLeft product={product} />

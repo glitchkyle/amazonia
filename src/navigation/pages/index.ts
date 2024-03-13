@@ -12,7 +12,7 @@ import { DecodedAccessToken, UserPermission } from 'src/types/auth'
  *
  * `returnPath: string`
  * Return URL after the user successfully authenticates. This is usually the page route.
- * (Default) undefined - page can be accessed publicly.
+ * (Default) undefined - page can be accessed without authenticating.
  */
 interface ProtectionProps {
   requiredPerms?: UserPermission[]
