@@ -47,6 +47,7 @@
     "axios-mock-adapter": "1.21.2",
     "bootstrap-icons": "1.10.3",
     "chart.js": "4.2.1",
+    "class-validator": "^0.14.1",
     "cleave.js": "1.6.0",
     "clipboard-copy": "4.0.1",
     "clsx": "1.2.1",
