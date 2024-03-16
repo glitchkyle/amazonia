@@ -6,13 +6,17 @@ import { DecodedAccessToken, UserPermission } from 'src/types/auth'
 /**
  * interface ProtectionProps
  *
- * `requiredPerms: UserPermission[]`
- * Permissions authorized to access this page.
+ * @param requiredPerms
+ * UserPermission[] - Permissions authorized to access this page.
  * (Default) undefined - page can be accessed by anyone regardless of permissions.
  *
- * `returnPath: string`
- * Return URL after the user successfully authenticates. This is usually the page route.
+ * @param returnPath
+ * string - Return URL after the user successfully authenticates. This is usually the page route.
  * (Default) undefined - page can be accessed without authenticating.
+ *
+ * @param callback
+ * function - Callback to run server-side before executing any authorization and authentication processes
+ * (Default) undefined
  */
 interface ProtectionProps {
   requiredPerms?: UserPermission[]
@@ -20,6 +24,18 @@ interface ProtectionProps {
   callback?: (context: NextPageContext) => Promise<{ props: { [key: string]: unknown } }>
 }
 
+/**
+ * function ProtectPage
+ *
+ * Middleware server-side function that should be executed before rendering
+ * a page to authenticate and authorize the user, if necessary.
+ *
+ * Authentication and authorization will be required if specified
+ * in the `ProtectionProps` parameter.
+ *
+ * @param params ProtectionProps
+ * @returns getServerSideProps function
+ */
 export const ProtectPage = (params: ProtectionProps) => {
   return async (ctx: NextPageContext) => {
     const { requiredPerms, returnPath, callback } = params
