@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       const user = new UserCreation(req.body as UserCreationForm)
       const errors = await validate(user)
       if (errors.length > 0)
-        res.status(401).json({
+        res.status(400).json({
           message: 'Invalid fields provided',
           data: errors
         })
