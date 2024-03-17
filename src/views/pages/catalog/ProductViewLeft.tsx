@@ -5,6 +5,7 @@ import Card from '@mui/material/Card'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
+import Button from '@mui/material/Button'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -12,10 +13,17 @@ import Icon from 'src/@core/components/icon'
 // ** Custom Components
 import CustomAvatar from 'src/@core/components/mui/avatar'
 
-// ** Utils Import
 import { Product } from '@prisma/client'
+import { useDispatch } from 'react-redux'
+import { handleAddItem } from 'src/store/apps/cart'
 
 const UserViewLeft = ({ product }: { product: Product }) => {
+  const dispatch = useDispatch()
+
+  const handleAddToCart = () => {
+    dispatch(handleAddItem(product))
+  }
+
   if (product) {
     return (
       <Grid container spacing={6}>
@@ -44,6 +52,14 @@ const UserViewLeft = ({ product }: { product: Product }) => {
                     <Typography variant='body2'>Price</Typography>
                   </div>
                 </Box>
+              </Box>
+            </CardContent>
+
+            <CardContent>
+              <Box sx={{ mr: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Button variant='contained' onClick={handleAddToCart}>
+                  Add to Cart
+                </Button>
               </Box>
             </CardContent>
 

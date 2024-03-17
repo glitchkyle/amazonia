@@ -31,8 +31,8 @@ export function getAccessibleLinks(perms: UserPermission[]): NavLink[] {
 
   if (perms.includes(UserPermission.READ_PRODUCTS))
     list.push({
-      title: 'Products',
-      path: '/products',
+      title: 'Inventory',
+      path: '/inventory',
       icon: 'mdi:package-variant'
     })
 

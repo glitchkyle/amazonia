@@ -1,9 +1,19 @@
 services:
-  postgres:
+  app-db:
     image: postgres:16.0
+    container_name: app_db
     ports:
       - 5432:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
+  test-db:
+    image: postgres:16.0
+    container_name: test_db
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=prisma
+      - POSTGRES_PASSWORD=prisma
+      - POSTGRES_DB=tests

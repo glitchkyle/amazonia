@@ -18,6 +18,7 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at').defaultTo(knex.fn.now())
     table.timestamp('updated_at').defaultTo(knex.fn.now())
     table.uuid('buyer_id').references('id').inTable('users')
+    table.string('status').defaultTo('PENDING')
   })
 
   await knex.schema.createTable('products', table => {
@@ -30,6 +31,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('picture').nullable()
     table.integer('price')
     table.string('currency')
+    table.integer('quantity').defaultTo(1)
   })
 
   await knex.schema.createTable('order_products', table => {
@@ -38,7 +40,7 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('updated_at').defaultTo(knex.fn.now())
     table.uuid('product_id').references('id').inTable('products')
     table.uuid('order_id').references('id').inTable('orders')
-    table.integer('quantity')
+    table.integer('quantity').defaultTo(1)
   })
 }
 

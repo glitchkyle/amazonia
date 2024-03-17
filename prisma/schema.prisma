@@ -32,22 +32,25 @@ model Order {
   updatedAt    DateTime       @updatedAt @map("updated_at")
   buyer        User           @relation(fields: [buyerId], references: [id])
   buyerId      String         @map("buyer_id")
+  status       String         @default("PENDING")
   OrderProduct OrderProduct[]
 
   @@map("orders")
 }
 
 model Product {
-  id           String         @id @default(uuid())
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  name         String
-  description  String
-  seller       User           @relation(fields: [sellerId], references: [id])
-  sellerId     String         @map("seller_id")
-  picture      String?
-  price        Int
-  currency     String
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  name        String
+  description String
+  seller      User     @relation(fields: [sellerId], references: [id])
+  sellerId    String   @map("seller_id")
+  picture     String?
+  price       Int
+  currency    String
+  quantity    Int      @default(1)
+
   OrderProduct OrderProduct[]
 
   @@map("products")
@@ -61,7 +64,7 @@ model OrderProduct {
   productId String   @map("product_id")
   order     Order    @relation(fields: [orderId], references: [id])
   orderId   String   @map("order_id")
-  quantity  Int
+  quantity  Int      @default(1)
 
   @@map("order_products")
 }

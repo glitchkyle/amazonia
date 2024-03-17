@@ -1,6 +1,8 @@
 import { getSession } from '@auth0/nextjs-auth0'
+import { User } from '@prisma/client'
 import { jwtDecode } from 'jwt-decode'
 import { InferGetServerSidePropsType, NextPageContext } from 'next/types'
+import db from 'src/configs/db'
 import { DecodedAccessToken, UserPermission } from 'src/types/auth'
 
 /**
@@ -21,7 +23,7 @@ import { DecodedAccessToken, UserPermission } from 'src/types/auth'
 interface ProtectionProps {
   requiredPerms?: UserPermission[]
   returnPath?: string
-  callback?: (context: NextPageContext) => Promise<{ props: { [key: string]: unknown } }>
+  callback?: (context: NextPageContext, app_user: User | null) => Promise<{ props: { [key: string]: unknown } }>
 }
 
 /**
@@ -40,14 +42,38 @@ export const ProtectPage = (params: ProtectionProps) => {
   return async (ctx: NextPageContext) => {
     const { requiredPerms, returnPath, callback } = params
 
-    let cbProps = {}
-    if (callback) {
-      const { props } = await callback(ctx)
-      cbProps = { ...props }
-    }
-
     // Get Auth0 session
     const session = await getSession(ctx.req, ctx.res)
+
+    let cbProps = {}
+    if (callback) {
+      try {
+        if (session?.user) {
+          const user = await db.user.findUnique({ where: { email: session.user.email } })
+          const { props } = await callback(ctx, user)
+          cbProps = { ...props }
+        } else {
+          const { props } = await callback(ctx, null)
+          cbProps = { ...props }
+        }
+      } catch (err: any) {
+        if (err.message === 'Unauthenticated') {
+          return {
+            redirect: {
+              destination: `/401`,
+              permanent: false
+            }
+          }
+        } else {
+          return {
+            redirect: {
+              destination: `/500`,
+              permanent: false
+            }
+          }
+        }
+      }
+    }
 
     if (session) {
       // If user is authenticated
@@ -118,6 +144,7 @@ export const ProtectPage = (params: ProtectionProps) => {
       return { props: { ...cbProps, user, permissions } }
     } else {
       // If user is not authenticated
+
       if (returnPath) {
         // If return path after authenticating is defined
         return {

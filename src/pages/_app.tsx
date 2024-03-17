@@ -43,7 +43,11 @@ import 'src/iconify-bundle/icons-bundle-react'
 
 // ** Global css styles
 import '../../styles/globals.css'
+
 import { UserProvider } from '@auth0/nextjs-auth0/client'
+
+import { Provider as ReduxProvider } from 'react-redux'
+import { store } from 'src/store'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -73,31 +77,33 @@ const App = (props: ExtendedAppProps) => {
   const setConfig = Component.setConfig ?? undefined
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>{themeConfig.templateName}</title>
-        <meta name='description' content={themeConfig.templateName} />
-        <meta name='keywords' content='E-Commerce, Auth0' />
-        <meta name='viewport' content='initial-scale=1, width=device-width' />
-      </Head>
+    <ReduxProvider store={store}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>{themeConfig.templateName}</title>
+          <meta name='description' content={themeConfig.templateName} />
+          <meta name='keywords' content='E-Commerce, Auth0' />
+          <meta name='viewport' content='initial-scale=1, width=device-width' />
+        </Head>
 
-      <UserProvider>
-        <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
-          <SettingsConsumer>
-            {({ settings }) => {
-              return (
-                <ThemeComponent settings={settings}>
-                  <Component {...pageProps} />
-                  <ReactHotToast>
-                    <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
-                  </ReactHotToast>
-                </ThemeComponent>
-              )
-            }}
-          </SettingsConsumer>
-        </SettingsProvider>
-      </UserProvider>
-    </CacheProvider>
+        <UserProvider>
+          <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
+            <SettingsConsumer>
+              {({ settings }) => {
+                return (
+                  <ThemeComponent settings={settings}>
+                    <Component {...pageProps} />
+                    <ReactHotToast>
+                      <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
+                    </ReactHotToast>
+                  </ThemeComponent>
+                )
+              }}
+            </SettingsConsumer>
+          </SettingsProvider>
+        </UserProvider>
+      </CacheProvider>
+    </ReduxProvider>
   )
 }
 

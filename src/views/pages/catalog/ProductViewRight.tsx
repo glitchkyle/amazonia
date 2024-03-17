@@ -121,6 +121,22 @@ const UserViewRight = ({ product }: Props) => {
                                   {product.price} {product.currency}
                                 </TableCell>
                               </TableRow>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{
+                                      fontWeight: 500,
+                                      fontSize: '0.875rem',
+                                      whiteSpace: 'nowrap',
+                                      lineHeight: '22px',
+                                      letterSpacing: '0.1px'
+                                    }}
+                                  >
+                                    Quantity:
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>{product.quantity}</TableCell>
+                              </TableRow>
                             </TableBody>
                           </Table>
                         </TableContainer>

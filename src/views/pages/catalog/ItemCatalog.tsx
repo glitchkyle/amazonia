@@ -1,6 +1,7 @@
 import { Card, CardContent, CardMedia, Grid, Typography } from '@mui/material'
 import { Product } from '@prisma/client'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 const Item = ({ product }: { product: Product }) => {
   const router = useRouter()
@@ -29,14 +30,18 @@ const Item = ({ product }: { product: Product }) => {
 }
 
 const ItemCatalog = ({ products }: { products: Product[] }) => {
+  const [productListing] = useState<Product[]>(products)
+
   return (
-    <Grid container spacing={4}>
-      {products.map((product, idx) => (
-        <Grid item xs={3} key={idx}>
-          <Item product={product} />
-        </Grid>
-      ))}
-    </Grid>
+    <>
+      <Grid container spacing={4}>
+        {productListing.map((product, idx) => (
+          <Grid item xs={3} key={idx}>
+            <Item product={product} />
+          </Grid>
+        ))}
+      </Grid>
+    </>
   )
 }
 
