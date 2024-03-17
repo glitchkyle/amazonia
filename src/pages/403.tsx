@@ -37,18 +37,18 @@ const Img = styled('img')(({ theme }) => ({
   }
 }))
 
-const Error401 = () => {
+const Error403 = () => {
   return (
     <Box className='content-center'>
       <Box sx={{ p: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <BoxWrapper>
           <Typography variant='h1' sx={{ mb: 2.5 }}>
-            401
+            403
           </Typography>
           <Typography variant='h5' sx={{ mb: 2.5, fontSize: '1.5rem !important' }}>
-            You are not authorized! 🔐
+            Not permitted! 🔐
           </Typography>
-          <Typography variant='body2'>Sorry, we are unable to verify your identity.</Typography>
+          <Typography variant='body2'>You don&prime;t have permission to access this page. Go Home!</Typography>
         </BoxWrapper>
         <Img alt='error-illustration' src='/images/pages/401.png' />
         <Button href={options.rootUrl} component={Link} variant='contained' sx={{ px: 5.5 }}>
@@ -60,6 +60,6 @@ const Error401 = () => {
   )
 }
 
-Error401.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+Error403.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
-export default Error401
+export default Error403

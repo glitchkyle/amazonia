@@ -3,11 +3,11 @@ import { handleAuth, handleLogin, handleLogout } from '@auth0/nextjs-auth0'
 export default handleAuth({
   login: handleLogin({
     authorizationParams: {
-      audience: 'https://api.amazonia.com/market',
-      scope: 'openid email profile create:products delete:products read:orders create:orders delete:orders'
+      audience: process.env.AUTH0_AUDIENCE,
+      scope: process.env.AUTH0_SCOPE
     }
   }),
   logout: handleLogout({
-    returnTo: '/catalog'
+    returnTo: '/'
   })
 })

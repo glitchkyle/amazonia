@@ -1638,10 +1638,10 @@
   resolved "https://registry.yarnpkg.com/@types/payment/-/payment-2.1.4.tgz#f406fc0b8e1f2a40c65b5aaa5e21bf80e5e33754"
   integrity sha512-FR9njCfl788PfIhjULwuyb0tpwh57g6uIWCZu+Mg69tQ/GyWoVL39+ugXn0LyqLhhUj/2qWKTRHX/Dqbhw6v7g==
 
-"@types/prismjs@1.26.0":
-  version "1.26.0"
-  resolved "https://registry.yarnpkg.com/@types/prismjs/-/prismjs-1.26.0.tgz#a1c3809b0ad61c62cac6d4e0c56d610c910b7654"
-  integrity sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==
+"@types/prismjs@^1.26.3":
+  version "1.26.3"
+  resolved "https://registry.yarnpkg.com/@types/prismjs/-/prismjs-1.26.3.tgz#47fe8e784c2dee24fe636cab82e090d3da9b7dec"
+  integrity sha512-A0D0aTXvjlqJ5ZILMz3rNfDBOx9hHxLZYv2by47Sm/pqW35zzjusrZTryatjN/Rf8Us2gZrJD+KeHbUSTux1Cw==
 
 "@types/prop-types@*", "@types/prop-types@^15.7.5":
   version "15.7.5"

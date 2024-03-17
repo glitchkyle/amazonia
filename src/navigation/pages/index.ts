@@ -115,7 +115,7 @@ export const ProtectPage = (params: ProtectionProps) => {
       if (!audiences.includes(serverAudience))
         return {
           redirect: {
-            destination: `/401`,
+            destination: `/403`,
             permanent: false
           }
         }
@@ -125,7 +125,7 @@ export const ProtectPage = (params: ProtectionProps) => {
         if (!permissions)
           return {
             redirect: {
-              destination: `/401`,
+              destination: `/403`,
               permanent: false
             }
           }
@@ -135,7 +135,7 @@ export const ProtectPage = (params: ProtectionProps) => {
         if (!permitted)
           return {
             redirect: {
-              destination: `/401`,
+              destination: `/403`,
               permanent: false
             }
           }

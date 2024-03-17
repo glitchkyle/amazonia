@@ -103,7 +103,7 @@
     "@types/node": "18.15.3",
     "@types/nprogress": "0.2.0",
     "@types/payment": "2.1.4",
-    "@types/prismjs": "1.26.0",
+    "@types/prismjs": "^1.26.3",
     "@types/react": "18.0.28",
     "@types/react-credit-cards": "0.8.1",
     "@types/react-datepicker": "4.10.0",
