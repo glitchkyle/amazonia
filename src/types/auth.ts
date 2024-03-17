@@ -1,3 +1,4 @@
+// @ts-ignore
 import { JwtPayload } from 'jsonwebtoken'
 
 export enum UserPermission {
@@ -17,4 +18,5 @@ export enum UserPermission {
 export interface DecodedAccessToken extends JwtPayload {
   scope?: string
   permissions?: UserPermission[]
+  aud?: string[]
 }

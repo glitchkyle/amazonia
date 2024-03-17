@@ -1,11 +1,7 @@
 // ** Next Imports
 import Head from 'next/head'
-import { Router } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
-
-// ** Loader Import
-import NProgress from 'nprogress'
 
 // ** Emotion Imports
 import { CacheProvider } from '@emotion/react'
@@ -56,19 +52,6 @@ type ExtendedAppProps = AppProps & {
 }
 
 const clientSideEmotionCache = createEmotionCache()
-
-// ** Pace Loader
-if (themeConfig.routingLoader) {
-  Router.events.on('routeChangeStart', () => {
-    NProgress.start()
-  })
-  Router.events.on('routeChangeError', () => {
-    NProgress.done()
-  })
-  Router.events.on('routeChangeComplete', () => {
-    NProgress.done()
-  })
-}
 
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {

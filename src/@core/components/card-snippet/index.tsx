@@ -19,6 +19,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import Icon from 'src/@core/components/icon'
 
 // ** Third Party Components
+// @ts-ignore
 import Prism from 'prismjs'
 import toast from 'react-hot-toast'
 
