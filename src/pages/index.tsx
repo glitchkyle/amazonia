@@ -1,5 +1,14 @@
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+
 const Home = () => {
-  return <>Home Page</>
+  const router = useRouter()
+
+  useEffect(() => {
+    router.push('/catalog')
+  }, [router])
+
+  return <>Home</>
 }
 
 export default Home
