@@ -17,8 +17,8 @@ model User {
   updatedAt     DateTime  @updatedAt @map("updated_at")
   sub           String // User ID in Auth0 database
   email         String    @unique
-  firstName     String    @default("John") @map("first_name")
-  lastName      String    @default("Doe") @map("last_name")
+  firstName     String?   @map("first_name")
+  lastName      String?   @map("last_name")
   emailVerified Boolean   @default(false) @map("email_verified")
   picture       String?
   Product       Product[]
