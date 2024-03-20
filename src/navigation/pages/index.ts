@@ -37,6 +37,8 @@ interface ProtectionProps {
  *
  * @param params ProtectionProps
  * @returns getServerSideProps function
+ *
+ * Refer to: https://auth0.com/docs/secure/tokens/access-tokens/validate-access-tokens
  */
 export const ProtectPage = (params: ProtectionProps) => {
   return async (ctx: NextPageContext) => {
