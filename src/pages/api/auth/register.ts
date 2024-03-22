@@ -1,7 +1,7 @@
 import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, ValidationError, validate } from 'class-validator'
 import type { NextApiRequest, NextApiResponse } from 'next/types'
 
-import db from 'src/configs/db'
+import prisma from 'src/lib/prisma'
 import { PrismaError } from 'src/types'
 
 interface UserCreationForm {
@@ -78,13 +78,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       if (req.body.secret === process.env.AUTH0_CLIENT_SECRET) {
         try {
-          await db.user.create({ data: user })
+          await prisma.user.create({ data: user })
           res.status(201).send({ message: 'Successfully created user!' })
         } catch (e) {
           const { message } = e as PrismaError
           res.status(500).json({ message })
         } finally {
-          await db.$disconnect()
+          await prisma.$disconnect()
         }
       } else {
         res.status(401).json({ message: 'Not authorized to perform this action' })

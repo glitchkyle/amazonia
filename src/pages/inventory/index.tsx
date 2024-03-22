@@ -1,5 +1,5 @@
 import moment from 'moment'
-import db from 'src/configs/db'
+import prisma from 'src/lib/prisma'
 import UserLayout from 'src/layouts/UserLayout'
 import { ProtectPage, ProtectionReturn } from 'src/navigation/pages'
 import { UserPermission } from 'src/types/auth'
@@ -10,7 +10,10 @@ export const getServerSideProps = ProtectPage({
   returnPath: '/inventory',
   callback: async (ctx, user) => {
     if (!user) throw new Error('Unauthenticated')
-    const products = await db.product.findMany({ orderBy: { createdAt: 'desc' }, where: { seller: { id: user.id } } })
+    const products = await prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
+      where: { seller: { id: user.id } }
+    })
 
     return {
       props: {

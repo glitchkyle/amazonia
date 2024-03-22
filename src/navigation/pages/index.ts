@@ -2,7 +2,7 @@ import { getSession } from '@auth0/nextjs-auth0'
 import { User } from '@prisma/client'
 import { jwtDecode } from 'jwt-decode'
 import { InferGetServerSidePropsType, NextPageContext } from 'next/types'
-import db from 'src/configs/db'
+import prisma from 'src/lib/prisma'
 import { DecodedAccessToken, UserPermission } from 'src/types/auth'
 
 /**
@@ -51,7 +51,7 @@ export const ProtectPage = (params: ProtectionProps) => {
     if (callback) {
       try {
         if (session?.user) {
-          const user = await db.user.findUnique({ where: { email: session.user.email } })
+          const user = await prisma.user.findUnique({ where: { email: session.user.email } })
           const { props } = await callback(ctx, user)
           cbProps = { ...props }
         } else {

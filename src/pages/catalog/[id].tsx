@@ -2,7 +2,7 @@ import moment from 'moment'
 
 import { ProtectPage, ProtectionReturn } from 'src/navigation/pages'
 
-import db from 'src/configs/db'
+import prisma from 'src/lib/prisma'
 
 import { Grid } from '@mui/material'
 
@@ -13,7 +13,10 @@ import ProductViewRight from 'src/views/pages/catalog/ProductViewRight'
 
 export const getServerSideProps = ProtectPage({
   callback: async ctx => {
-    const product = await db.product.findUnique({ where: { id: ctx.query.id as string }, include: { seller: true } })
+    const product = await prisma.product.findUnique({
+      where: { id: ctx.query.id as string },
+      include: { seller: true }
+    })
 
     return {
       props: {
