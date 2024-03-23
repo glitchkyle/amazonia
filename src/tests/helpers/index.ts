@@ -1,3 +1,4 @@
+// @ts-ignore
 import { createMocks, RequestMethod } from 'node-mocks-http'
 import { NextApiRequest, NextApiResponse } from 'next/types'
 
