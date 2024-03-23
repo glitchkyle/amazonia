@@ -1,20 +1,10 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, ValidationError, validate } from 'class-validator'
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, validate } from 'class-validator'
 import type { NextApiRequest, NextApiResponse } from 'next/types'
 
-import db from 'src/configs/db'
+import prisma from 'src/lib/prisma'
 import { PrismaError } from 'src/types'
-
-interface UserCreationForm {
-  sub?: string
-  email?: string
-  emailVerified?: boolean
-  firstName?: string
-  lastName?: string
-  picture?: string
-
-  // We are also sending across a secret value to validate that this request is coming from Auth0
-  secret?: string
-}
+import { ResponseType } from 'src/types/pages/api'
+import { UserCreationForm } from 'src/types/pages/api/auth/register'
 
 class UserCreation implements UserCreationForm {
   @IsNotEmpty()
@@ -55,16 +45,7 @@ class UserCreation implements UserCreationForm {
   }
 }
 
-interface ResponseData {
-  message: string
-}
-
-interface ResponseError {
-  data: ValidationError[]
-  message: string
-}
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData | ResponseError>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   switch (req.method) {
     case 'POST':
       const user = new UserCreation(req.body as UserCreationForm)
@@ -78,13 +59,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       if (req.body.secret === process.env.AUTH0_CLIENT_SECRET) {
         try {
-          await db.user.create({ data: user })
+          await prisma.user.create({ data: user })
           res.status(201).send({ message: 'Successfully created user!' })
         } catch (e) {
           const { message } = e as PrismaError
           res.status(500).json({ message })
         } finally {
-          await db.$disconnect()
+          await prisma.$disconnect()
         }
       } else {
         res.status(401).json({ message: 'Not authorized to perform this action' })

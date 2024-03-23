@@ -4,12 +4,12 @@ import KeenSliderWrapper from 'src/@core/styles/libs/keen-slider'
 import ItemCatalog from 'src/views/pages/catalog/ItemCatalog'
 import UserLayout from 'src/layouts/UserLayout'
 import { ProtectPage, ProtectionReturn } from 'src/navigation/pages'
-import db from 'src/configs/db'
+import prisma from 'src/lib/prisma'
 import moment from 'moment'
 
 export const getServerSideProps = ProtectPage({
   callback: async () => {
-    const products = await db.product.findMany({ orderBy: { createdAt: 'desc' } })
+    const products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
 
     return {
       props: {

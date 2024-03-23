@@ -15,7 +15,7 @@ model User {
   id            String    @id @default(uuid())
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
-  sub           String // User ID in Auth0 database
+  sub           String    @unique // User ID in Auth0 database
   email         String    @unique
   firstName     String?   @map("first_name")
   lastName      String?   @map("last_name")

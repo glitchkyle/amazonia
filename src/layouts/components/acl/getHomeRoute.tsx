@@ -12,8 +12,6 @@ const getHomeRoute = (role: string) => {
       return '/catalog'
     case UserRole.SELLER:
       return '/'
-    case UserRole.CLIENT:
-      return '/catalog'
     default:
       return options.rootUrl
   }

@@ -1,5 +1,5 @@
 import moment from 'moment'
-import db from 'src/configs/db'
+import prisma from 'src/lib/prisma'
 import UserLayout from 'src/layouts/UserLayout'
 import { ProtectPage, ProtectionReturn } from 'src/navigation/pages'
 import TableSort from 'src/views/pages/table/data-grid/TableBasicSort'
@@ -8,7 +8,7 @@ export const getServerSideProps = ProtectPage({
   returnPath: '/orders',
   callback: async (ctx, user) => {
     if (!user) throw new Error('Unauthenticated')
-    const orders = await db.order.findMany({ orderBy: { createdAt: 'desc' }, where: { buyer: { id: user.id } } })
+    const orders = await prisma.order.findMany({ orderBy: { createdAt: 'desc' }, where: { buyer: { id: user.id } } })
 
     return {
       props: {
