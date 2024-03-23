@@ -4,10 +4,5 @@ export default defineConfig({
   test: {
     include: ['src/tests/**/*.test.ts'],
     setupFiles: ['src/tests/helpers/setup.ts']
-  },
-  resolve: {
-    alias: {
-      lib: '/src/lib'
-    }
   }
 })

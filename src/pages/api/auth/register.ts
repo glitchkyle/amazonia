@@ -1,20 +1,10 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, ValidationError, validate } from 'class-validator'
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, validate } from 'class-validator'
 import type { NextApiRequest, NextApiResponse } from 'next/types'
 
 import prisma from 'src/lib/prisma'
 import { PrismaError } from 'src/types'
-
-interface UserCreationForm {
-  sub?: string
-  email?: string
-  emailVerified?: boolean
-  firstName?: string
-  lastName?: string
-  picture?: string
-
-  // We are also sending across a secret value to validate that this request is coming from Auth0
-  secret?: string
-}
+import { ResponseType } from 'src/types/pages/api'
+import { UserCreationForm } from 'src/types/pages/api/auth/register'
 
 class UserCreation implements UserCreationForm {
   @IsNotEmpty()
@@ -55,16 +45,7 @@ class UserCreation implements UserCreationForm {
   }
 }
 
-interface ResponseData {
-  message: string
-}
-
-interface ResponseError {
-  data: ValidationError[]
-  message: string
-}
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData | ResponseError>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   switch (req.method) {
     case 'POST':
       const user = new UserCreation(req.body as UserCreationForm)
