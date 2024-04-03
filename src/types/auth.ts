@@ -15,6 +15,13 @@ export enum UserPermission {
   DELETE_USERS = 'delete:users'
 }
 
+export interface TokenResponse {
+  access_token: string
+  expires_in: number
+  scope: string
+  token_type: string
+}
+
 export interface DecodedAccessToken extends JwtPayload {
   scope?: string
   permissions?: UserPermission[]

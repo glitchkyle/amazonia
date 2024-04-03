@@ -177,7 +177,7 @@ describe('/api/auth/register', () => {
       expect(mockReqRes2.res.statusCode).toBe(500)
       expect(newUser2).toBeNull()
     })
-  })
 
-  // TODO: Test when query fails
+    // TODO: Test when query fails
+  })
 })

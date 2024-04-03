@@ -1,4 +1,4 @@
-import { handleAuth, handleLogin, handleLogout } from '@auth0/nextjs-auth0'
+import { handleAuth, handleLogin, handleLogout, handleProfile } from '@auth0/nextjs-auth0'
 
 export default handleAuth({
   login: handleLogin({
@@ -9,5 +9,6 @@ export default handleAuth({
   }),
   logout: handleLogout({
     returnTo: '/'
-  })
+  }),
+  profile: handleProfile({ refetch: true })
 })

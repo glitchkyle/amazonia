@@ -8,6 +8,7 @@ import Icon from 'src/@core/components/icon'
 
 // ** Type Import
 import { Settings } from 'src/@core/context/settingsContext'
+import { UserPermission } from 'src/types/auth'
 
 // ** Components
 import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
@@ -20,11 +21,12 @@ interface Props {
   settings: Settings
   toggleNavVisibility: () => void
   saveSettings: (values: Settings) => void
+  permissions?: UserPermission[]
 }
 
 const AppBarContent = (props: Props) => {
   // ** Props
-  const { hidden, settings, saveSettings, toggleNavVisibility } = props
+  const { hidden, settings, saveSettings, toggleNavVisibility, permissions } = props
 
   const { user } = useUser()
 
@@ -41,7 +43,7 @@ const AppBarContent = (props: Props) => {
       </Box>
       {user ? (
         <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
-          <UserDropdown settings={settings} />
+          <UserDropdown settings={settings} permissions={permissions} />
         </Box>
       ) : (
         <Button variant={'contained'} href={`/api/auth/login`}>

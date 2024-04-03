@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 
 // ** Type Import
 import { Settings } from 'src/@core/context/settingsContext'
+import { UserPermission } from 'src/types/auth'
 
 // ** Components
 import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
@@ -11,7 +12,9 @@ import UserDropdown from 'src/@core/layouts/components/shared-components/UserDro
 interface Props {
   settings: Settings
   saveSettings: (values: Settings) => void
+  permissions?: UserPermission[]
 }
+
 const AppBarContent = (props: Props) => {
   // ** Props
   const { settings, saveSettings } = props

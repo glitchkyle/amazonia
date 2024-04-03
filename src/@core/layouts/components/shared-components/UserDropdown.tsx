@@ -17,13 +17,18 @@ import Typography from '@mui/material/Typography'
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 
+// ** Axios
+import axios from 'axios'
+
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
 import options from 'src/configs'
 import { useUser } from '@auth0/nextjs-auth0/client'
+import { UserPermission } from 'src/types/auth'
 
 interface Props {
   settings: Settings
+  permissions?: UserPermission[]
 }
 
 // ** Styled Components
@@ -37,13 +42,14 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 
 const UserDropdown = (props: Props) => {
   // ** Props
-  const { settings } = props
+  const { settings, permissions } = props
 
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   // ** Hooks
-  const { user } = useUser()
+
+  const { user, checkSession } = useUser()
   const router = useRouter()
 
   // ** Vars
@@ -56,6 +62,18 @@ const UserDropdown = (props: Props) => {
   const handleDropdownClose = (url?: string) => {
     if (url) router.push(url)
     setAnchorEl(null)
+  }
+  const handleUpgradeToSeller = async () => {
+    if (user) {
+      try {
+        if (!user.sub) throw new Error('Missing Subject Property')
+        await axios.post('/api/auth/upgrade', { userId: user.sub })
+        await checkSession()
+        router.reload()
+      } catch (e) {
+        return alert(e)
+      }
+    }
   }
 
   const styles = {
@@ -124,6 +142,20 @@ const UserDropdown = (props: Props) => {
             Profile
           </Box>
         </MenuItem>
+
+        {/**
+         * TODO: Change this when user roles can be stored inside app database
+         * Show become a seller button if user is not able to read their product details
+         */}
+        {!permissions?.includes(UserPermission.READ_PRODUCTS) && (
+          <MenuItem sx={{ p: 0 }} onClick={() => handleUpgradeToSeller()}>
+            <Box sx={styles}>
+              <Icon icon='mdi:dollar' />
+              Become a Seller
+            </Box>
+          </MenuItem>
+        )}
+
         <MenuItem
           onClick={() => handleDropdownClose(`/api/auth/logout?returnTo=${options.rootUrl}`)}
           sx={{ py: 2, '& svg': { mr: 2, fontSize: '1.375rem', color: 'text.primary' } }}

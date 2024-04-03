@@ -73,6 +73,7 @@ const UserLayout = ({ children, contentHeightFixed, permissions }: Props) => {
               settings={settings}
               saveSettings={saveSettings}
               toggleNavVisibility={props.toggleNavVisibility}
+              permissions={permissions}
             />
           )
         }
@@ -86,7 +87,9 @@ const UserLayout = ({ children, contentHeightFixed, permissions }: Props) => {
             // navItems: horizontalMenuItems
           },
           appBar: {
-            content: () => <HorizontalAppBarContent settings={settings} saveSettings={saveSettings} />
+            content: () => (
+              <HorizontalAppBarContent settings={settings} saveSettings={saveSettings} permissions={permissions} />
+            )
           }
         }
       })}
