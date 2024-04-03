@@ -17,41 +17,41 @@ import UserDropdown from 'src/@core/layouts/components/shared-components/UserDro
 import { useUser } from '@auth0/nextjs-auth0/client'
 
 interface Props {
-  hidden: boolean
-  settings: Settings
-  toggleNavVisibility: () => void
-  saveSettings: (values: Settings) => void
-  permissions?: UserPermission[]
+    hidden: boolean
+    settings: Settings
+    toggleNavVisibility: () => void
+    saveSettings: (values: Settings) => void
+    permissions?: UserPermission[]
 }
 
 const AppBarContent = (props: Props) => {
-  // ** Props
-  const { hidden, settings, saveSettings, toggleNavVisibility, permissions } = props
+    // ** Props
+    const { hidden, settings, saveSettings, toggleNavVisibility, permissions } = props
 
-  const { user } = useUser()
+    const { user } = useUser()
 
-  return (
-    <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Box className='actions-left' sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
-        {hidden ? (
-          <IconButton color='inherit' sx={{ ml: -2.75 }} onClick={toggleNavVisibility}>
-            <Icon icon='mdi:menu' />
-          </IconButton>
-        ) : null}
+    return (
+        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box className='actions-left' sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
+                {hidden ? (
+                    <IconButton color='inherit' sx={{ ml: -2.75 }} onClick={toggleNavVisibility}>
+                        <Icon icon='mdi:menu' />
+                    </IconButton>
+                ) : null}
 
-        <ModeToggler settings={settings} saveSettings={saveSettings} />
-      </Box>
-      {user ? (
-        <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
-          <UserDropdown settings={settings} permissions={permissions} />
+                <ModeToggler settings={settings} saveSettings={saveSettings} />
+            </Box>
+            {user ? (
+                <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
+                    <UserDropdown settings={settings} permissions={permissions} />
+                </Box>
+            ) : (
+                <Button variant={'contained'} href={`/api/auth/login`}>
+                    Login
+                </Button>
+            )}
         </Box>
-      ) : (
-        <Button variant={'contained'} href={`/api/auth/login`}>
-          Login
-        </Button>
-      )}
-    </Box>
-  )
+    )
 }
 
 export default AppBarContent

@@ -5,13 +5,13 @@ import { configureStore } from '@reduxjs/toolkit'
 import Cart from 'src/store/apps/cart'
 
 export const store = configureStore({
-  reducer: {
-    Cart
-  },
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      serializableCheck: false
-    })
+    reducer: {
+        Cart
+    },
+    middleware: getDefaultMiddleware =>
+        getDefaultMiddleware({
+            serializableCheck: false
+        })
 })
 
 export type AppDispatch = typeof store.dispatch

@@ -8,35 +8,35 @@ import prisma from 'src/lib/prisma'
 import moment from 'moment'
 
 export const getServerSideProps = ProtectPage({
-  callback: async () => {
-    const products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
+    callback: async () => {
+        const products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' } })
 
-    return {
-      props: {
-        products: products.map(product => {
-          return {
-            ...product,
-            createdAt: moment(product.createdAt).toString(),
-            updatedAt: moment(product.updatedAt).toString()
-          }
-        })
-      }
+        return {
+            props: {
+                products: products.map(product => {
+                    return {
+                        ...product,
+                        createdAt: moment(product.createdAt).toString(),
+                        updatedAt: moment(product.updatedAt).toString()
+                    }
+                })
+            }
+        }
     }
-  }
 })
 
 const CatalogPage = (props: ProtectionReturn) => {
-  const { permissions, products } = props
+    const { permissions, products } = props
 
-  return (
-    <UserLayout permissions={permissions}>
-      <ApexChartWrapper>
-        <KeenSliderWrapper>
-          <ItemCatalog products={products} />
-        </KeenSliderWrapper>
-      </ApexChartWrapper>
-    </UserLayout>
-  )
+    return (
+        <UserLayout permissions={permissions}>
+            <ApexChartWrapper>
+                <KeenSliderWrapper>
+                    <ItemCatalog products={products} />
+                </KeenSliderWrapper>
+            </ApexChartWrapper>
+        </UserLayout>
+    )
 }
 
 export default CatalogPage
