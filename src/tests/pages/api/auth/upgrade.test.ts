@@ -32,6 +32,22 @@ describe.only('/api/auth/upgrade', () => {
             expect(sellerRole).toBeDefined()
         })
 
+        it('Should not affect role if already a seller', async () => {
+            const { req, res } = mockRequestResponse('POST')
+
+            req.body = { userId: userSubjectId }
+
+            await handler(req, res)
+
+            expect(res.statusCode).toBe(200)
+
+            // Role upgrade should have succeeded but with no change
+            const response = await getUserRoles(userSubjectId)
+            const userRoles = response.data as UserRole[]
+            const sellerRole = find(userRoles, { id: sellerRoleId })
+            expect(sellerRole).toBeDefined()
+        })
+
         it('Should fail when user ID is missing from request', async () => {
             const { req, res } = mockRequestResponse('POST')
 
