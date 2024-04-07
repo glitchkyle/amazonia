@@ -6,23 +6,23 @@ import HorizontalNavLink from './HorizontalNavLink'
 import HorizontalNavGroup from './HorizontalNavGroup'
 
 interface Props {
-  hasParent?: boolean
-  horizontalNavItems?: HorizontalNavItemsType
+    hasParent?: boolean
+    horizontalNavItems?: HorizontalNavItemsType
 }
 const resolveComponent = (item: NavGroup | NavLink) => {
-  if ((item as NavGroup).children) return HorizontalNavGroup
+    if ((item as NavGroup).children) return HorizontalNavGroup
 
-  return HorizontalNavLink
+    return HorizontalNavLink
 }
 
 const HorizontalNavItems = (props: Props) => {
-  const RenderMenuItems = props.horizontalNavItems?.map((item: NavGroup | NavLink, index: number) => {
-    const TagName: any = resolveComponent(item)
+    const RenderMenuItems = props.horizontalNavItems?.map((item: NavGroup | NavLink, index: number) => {
+        const TagName: any = resolveComponent(item)
 
-    return <TagName {...props} key={index} item={item} />
-  })
+        return <TagName {...props} key={index} item={item} />
+    })
 
-  return <>{RenderMenuItems}</>
+    return <>{RenderMenuItems}</>
 }
 
 export default HorizontalNavItems

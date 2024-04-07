@@ -28,72 +28,79 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 import { UserPermission } from 'src/types/auth'
 
 interface Props {
-  children: ReactNode
-  contentHeightFixed?: boolean
-  permissions?: UserPermission[]
+    children: ReactNode
+    contentHeightFixed?: boolean
+    permissions?: UserPermission[]
 }
 
 const UserLayout = ({ children, contentHeightFixed, permissions }: Props) => {
-  // ** Hooks
-  const { settings, saveSettings } = useSettings()
+    // ** Hooks
+    const { settings, saveSettings } = useSettings()
 
-  // ** Vars for server side navigation
-  // const { menuItems: verticalMenuItems } = ServerSideVerticalNavItems()
-  // const { menuItems: horizontalMenuItems } = ServerSideHorizontalNavItems()
+    // ** Vars for server side navigation
+    // const { menuItems: verticalMenuItems } = ServerSideVerticalNavItems()
+    // const { menuItems: horizontalMenuItems } = ServerSideHorizontalNavItems()
 
-  /**
-   *  The below variable will hide the current layout menu at given screen size.
-   *  The menu will be accessible from the Hamburger icon only (Vertical Overlay Menu).
-   *  You can change the screen size from which you want to hide the current layout menu.
-   *  Please refer useMediaQuery() hook: https://mui.com/material-ui/react-use-media-query/,
-   *  to know more about what values can be passed to this hook.
-   *  ! Do not change this value unless you know what you are doing. It can break the template.
-   */
-  const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
+    /**
+     *  The below variable will hide the current layout menu at given screen size.
+     *  The menu will be accessible from the Hamburger icon only (Vertical Overlay Menu).
+     *  You can change the screen size from which you want to hide the current layout menu.
+     *  Please refer useMediaQuery() hook: https://mui.com/material-ui/react-use-media-query/,
+     *  to know more about what values can be passed to this hook.
+     *  ! Do not change this value unless you know what you are doing. It can break the template.
+     */
+    const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
 
-  if (hidden && settings.layout === 'horizontal') settings.layout = 'vertical'
+    if (hidden && settings.layout === 'horizontal') settings.layout = 'vertical'
 
-  return (
-    <Layout
-      hidden={hidden}
-      settings={settings}
-      saveSettings={saveSettings}
-      contentHeightFixed={contentHeightFixed}
-      verticalLayoutProps={{
-        navMenu: {
-          navItems: VerticalNavItems(permissions)
+    return (
+        <Layout
+            hidden={hidden}
+            settings={settings}
+            saveSettings={saveSettings}
+            contentHeightFixed={contentHeightFixed}
+            verticalLayoutProps={{
+                navMenu: {
+                    navItems: VerticalNavItems(permissions)
 
-          // Uncomment the below line when using server-side menu in vertical layout and comment the above line
-          // navItems: verticalMenuItems
-        },
-        appBar: {
-          content: props => (
-            <VerticalAppBarContent
-              hidden={hidden}
-              settings={settings}
-              saveSettings={saveSettings}
-              toggleNavVisibility={props.toggleNavVisibility}
-            />
-          )
-        }
-      }}
-      {...(settings.layout === 'horizontal' && {
-        horizontalLayoutProps: {
-          navMenu: {
-            navItems: HorizontalNavItems(permissions)
+                    // Uncomment the below line when using server-side menu in vertical layout and comment the above line
+                    // navItems: verticalMenuItems
+                },
+                appBar: {
+                    content: props => (
+                        <VerticalAppBarContent
+                            hidden={hidden}
+                            settings={settings}
+                            saveSettings={saveSettings}
+                            toggleNavVisibility={props.toggleNavVisibility}
+                            permissions={permissions}
+                        />
+                    )
+                }
+            }}
+            {...(settings.layout === 'horizontal' && {
+                horizontalLayoutProps: {
+                    navMenu: {
+                        navItems: HorizontalNavItems(permissions)
 
-            // Uncomment the below line when using server-side menu in horizontal layout and comment the above line
-            // navItems: horizontalMenuItems
-          },
-          appBar: {
-            content: () => <HorizontalAppBarContent settings={settings} saveSettings={saveSettings} />
-          }
-        }
-      })}
-    >
-      {children}
-    </Layout>
-  )
+                        // Uncomment the below line when using server-side menu in horizontal layout and comment the above line
+                        // navItems: horizontalMenuItems
+                    },
+                    appBar: {
+                        content: () => (
+                            <HorizontalAppBarContent
+                                settings={settings}
+                                saveSettings={saveSettings}
+                                permissions={permissions}
+                            />
+                        )
+                    }
+                }
+            })}
+        >
+            {children}
+        </Layout>
+    )
 }
 
 export default UserLayout

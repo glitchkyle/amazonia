@@ -6,7 +6,7 @@ import { beforeEach } from 'vitest'
 import { mockDeep, mockReset } from 'vitest-mock-extended'
 
 beforeEach(() => {
-  mockReset(prisma)
+    mockReset(prisma)
 })
 
 const prisma = mockDeep<PrismaClient>()

@@ -1,5 +1,5 @@
 const options = {
-  rootUrl: '/catalog'
+    rootUrl: '/catalog'
 }
 
 export default options
