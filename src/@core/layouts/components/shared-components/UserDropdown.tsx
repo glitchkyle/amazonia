@@ -64,15 +64,12 @@ const UserDropdown = (props: Props) => {
         setAnchorEl(null)
     }
     const handleUpgradeToSeller = async () => {
-        if (user) {
-            try {
-                if (!user.sub) throw new Error('Missing Subject Property')
-                await axios.post('/api/auth/upgrade', { userId: user.sub })
-                await checkSession()
-                router.reload()
-            } catch (e) {
-                return alert(e)
-            }
+        try {
+            await axios.post('/api/auth/upgrade')
+            await checkSession()
+            router.reload()
+        } catch (e) {
+            alert(e)
         }
     }
 

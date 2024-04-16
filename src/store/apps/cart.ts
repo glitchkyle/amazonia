@@ -11,6 +11,7 @@ export interface CartProduct extends Product {
 }
 
 export const purchase = createAsyncThunk('appCart/purchase', async () => {
+    // TODO: Call API request creating new order
     console.log('Submitting purchase request')
 })
 
@@ -19,9 +20,6 @@ export const appCartSlice = createSlice({
     initialState: {
         data: [] as CartProduct[],
         total: 1,
-        params: {},
-        allData: [],
-
         price: 0
     },
     reducers: {
@@ -38,6 +36,7 @@ export const appCartSlice = createSlice({
                 state.data.push({ ...product, quantity: 1 })
             }
 
+            state.total += 1
             state.price += product.price
         },
         handleRemoveItem: (state, { payload }: AppAction) => {
@@ -54,6 +53,8 @@ export const appCartSlice = createSlice({
                     // If item is in store with quantity = 1, delete order product
                     state.data = state.data.filter(element => element.id !== item.id)
                 }
+
+                state.total -= 1
                 state.price -= product.price
             }
 
@@ -62,7 +63,9 @@ export const appCartSlice = createSlice({
     },
     extraReducers: builder => {
         builder.addCase(purchase.fulfilled, state => {
+            // Reset cart when order successfully created
             state.data = []
+            state.total = 0
         })
     }
 })
